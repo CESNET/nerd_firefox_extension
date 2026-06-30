@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>NERD IP info</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <div class="header">
+      <h3>NERD IP info</h3>
+      <a id="settingsLink" class="settings-link" href="#">Settings</a>
+    </div>
+
+    <!-- Page Scan Section -->
+    <div class="scan-section">
+      <button id="pageScanBtn" title="Scan every IP address found on the current page">Lookup all IPs</button>
+      <span id="pageScanSpinner" class="scan-spinner" aria-hidden="true"></span>
+      <span id="pageScanStatus" class="scan-status" aria-live="polite"></span>
+    </div>
+
+    <!-- Manual Lookup Section -->
+    <div class="lookup-section">
+      <input id="ipInput" placeholder="e.g. 8.8.8.8" />
+      <button id="lookupBtn">Lookup</button>
+    </div>
+    <div id="status"></div>
+
+    <!-- Lookup Result Card -->
+    <div id="resultCard" class="result-card hidden">
+      <div class="ip-host-line">
+        <span class="ip-address" id="ipAddress"></span>
+        <span class="hostname" id="hostname"></span>
+      </div>
+      <div class="verdict-line">
+        <span class="traffic-light" id="trafficLight"></span>
+        <span class="verdict" id="verdict"></span>
+        <span class="threat-category" id="threatCategory"></span>
+      </div>
+      <div class="score" id="score"></div>
+      <div class="tags" id="tags"></div>
+      <div class="details" id="details"></div>
+      <div class="actions">
+        <button id="copyRawJsonBtn" title="Copy raw JSON to clipboard">Copy raw JSON</button>
+        <a id="nerdLink" href="#" target="_blank" rel="noopener noreferrer">Open in NERD</a>
+      </div>
+    </div>
+
+    <!-- Detection Toggle -->
+    <div class="settings-section">
+      <label for="toggleSwitch">Enable detection on pages:</label>
+      <input type="checkbox" id="toggleSwitch" />
+      <span id="toggleStatus">On</span>
+    </div>
+
+    <!-- Site list quick actions -->
+    <div class="site-list-actions">
+      <button id="addToBlocklistBtn" class="site-list-btn block" title="Disable IP detection on this site">Add site to blocklist</button>
+      <button id="addToAllowlistBtn" class="site-list-btn allow" title="Enable IP detection only on this site (allowlist mode)">Add site to allowlist</button>
+    </div>
+    <div id="siteListActionStatus" class="site-list-action-status"></div>
+
+    <!-- Recent History -->
+    <h4 class="recent-heading">Recent Lookups</h4>
+    <ul id="results"></ul>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

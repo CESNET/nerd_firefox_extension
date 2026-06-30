@@ -1,0 +1,30 @@
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Dependency directories
+node_modules/
+
+# Chrome extension package files
+*.zip
+*.crx
+
+# Local / sensitive files
+.env
+.env.local
+secrets.json
+
+# Temporary files
+__pycache__/
+*.tmp

@@ -1,0 +1,421 @@
+/**
+ * IP Detector - Popup Styles
+ *
+ * All rules scoped to the popup HTML. The popup is fixed at 460 px
+ * wide and laid out as one continuous page without scrollbars.
+ */
+
+/* ------------------------------------------------------------------
+   Base popup styles
+   ------------------------------------------------------------------ */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  width: 460px;
+  color: #333;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#app {
+  padding: 18px;
+}
+
+/* ------------------------------------------------------------------
+   Header
+   ------------------------------------------------------------------ */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.settings-link {
+  font-size: 12px;
+  color: #1a73e8;
+  text-decoration: none;
+}
+
+.settings-link:hover {
+  text-decoration: underline;
+}
+
+/* ------------------------------------------------------------------
+   Page scan
+   ------------------------------------------------------------------ */
+.scan-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+#pageScanBtn {
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #1a73e8;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+#pageScanBtn:hover:not(:disabled) {
+  background-color: #1557b0;
+}
+
+#pageScanBtn:disabled {
+  background-color: #8ab4f8;
+  cursor: wait;
+}
+
+.scan-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #dadce0;
+  border-top-color: #1a73e8;
+  border-radius: 50%;
+  animation: scan-spin 0.8s linear infinite;
+  display: none;
+}
+
+@keyframes scan-spin {
+  to { transform: rotate(360deg); }
+}
+
+.scan-status {
+  font-size: 12px;
+  color: #5f6368;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 240px;
+}
+
+/* ------------------------------------------------------------------
+   Manual lookup
+   ------------------------------------------------------------------ */
+.lookup-section {
+  display: flex;
+  gap: 6px;
+}
+
+#ipInput {
+  flex: 1;
+  padding: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+#lookupBtn {
+  padding: 8px 14px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+#status {
+  color: #666;
+  margin-top: 6px;
+  font-size: 12px;
+  min-height: 16px;
+}
+
+/* ------------------------------------------------------------------
+   Result card
+   ------------------------------------------------------------------ */
+.result-card {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.result-card.hidden {
+  display: none;
+}
+
+/* IP + hostname line at the top of the result card */
+.ip-host-line {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.ip-address {
+  font-size: 18px;
+  font-weight: bold;
+  font-family: monospace;
+}
+
+.hostname {
+  font-size: 13px;
+  color: #555;
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hostname.hidden {
+  display: none;
+}
+
+/* Verdict line: traffic light + verdict + threat category */
+.verdict-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Traffic light dot */
+.traffic-light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.traffic-light.red    { background-color: #d32f2f; box-shadow: 0 0 4px #d32f2f; }
+.traffic-light.orange { background-color: #f57c00; box-shadow: 0 0 4px #f57c00; }
+.traffic-light.green  { background-color: #388e3c; box-shadow: 0 0 4px #388e3c; }
+.traffic-light.gray   { background-color: #9e9e9e; }
+
+.verdict {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.threat-category {
+  font-size: 13px;
+  color: #333;
+  background: #ffe0b2;
+  padding: 1px 6px;
+  border-radius: 10px;
+  margin-left: 2px;
+}
+
+.threat-category.hidden {
+  display: none;
+}
+
+.score {
+  font-size: 13px;
+  color: #555;
+  margin: 4px 0;
+}
+
+/* Tag pills below the verdict */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin: 6px 0;
+}
+
+.tags-label {
+  font-size: 11px;
+  color: #888;
+  text-transform: lowercase;
+  margin-right: 2px;
+}
+
+.tag {
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+/* Details pane — dynamically populated API fields */
+.details {
+  font-size: 12px;
+  color: #444;
+  margin-top: 6px;
+}
+
+.details p {
+  margin: 3px 0;
+}
+
+/* Blacklist rows and pill chips */
+.blacklist-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.blacklist-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding-top: 1px;
+}
+
+.blacklist-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  line-height: 1.2;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: #ffebee;
+  color: #e53935;
+  border: 1px solid #ef9a9a;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.blacklist-item:hover:not(.blacklist-item-empty) {
+  background: #ffcdd2;
+  border-color: #e57373;
+}
+
+.blacklist-item-empty {
+  cursor: default;
+}
+
+.blacklist-item::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ef5350;
+}
+
+/* Link + copy button row */
+.actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+#copyRawJsonBtn {
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+#nerdLink {
+  font-size: 12px;
+  color: #1a73e8;
+  text-decoration: none;
+}
+
+#nerdLink:hover {
+  text-decoration: underline;
+}
+
+/* ------------------------------------------------------------------
+   Detection toggle
+   ------------------------------------------------------------------ */
+.settings-section {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings-section label {
+  flex: 1;
+  margin: 0;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+#toggleSwitch {
+  margin: 0;
+  width: 32px;
+  height: 18px;
+}
+
+#toggleStatus {
+  font-size: 11px;
+  color: #666;
+}
+
+/* ------------------------------------------------------------------
+   Site list quick actions
+   ------------------------------------------------------------------ */
+.site-list-actions {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.site-list-btn {
+  flex: 1;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.site-list-btn.block {
+  color: #c62828;
+  background-color: #ffebee;
+  border-color: #ef9a9a;
+}
+
+.site-list-btn.block:hover {
+  background-color: #ffcdd2;
+  border-color: #e57373;
+}
+
+.site-list-btn.allow {
+  color: #2e7d32;
+  background-color: #e8f5e9;
+  border-color: #a5d6a7;
+}
+
+.site-list-btn.allow:hover {
+  background-color: #c8e6c9;
+  border-color: #81c784;
+}
+
+.site-list-action-status {
+  margin-top: 8px;
+  min-height: 16px;
+  font-size: 12px;
+  color: #5f6368;
+}
+
+/* ------------------------------------------------------------------
+   Recent lookups list
+   ------------------------------------------------------------------ */
+.recent-heading {
+  margin: 16px 0 6px;
+  font-size: 13px;
+  color: #555;
+}
+
+#results {
+  margin: 0;
+  padding-left: 16px;
+}
+
+#results li {
+  font-size: 12px;
+  color: #444;
+  margin-bottom: 4px;
+}

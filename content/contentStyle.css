@@ -1,0 +1,117 @@
+/**
+ * IP Detector - Injected page styles
+ *
+ * These rules apply inside every web page where the extension runs.
+ * They define the visual appearance of the inline IP wrappers.
+ */
+
+/*
+ * Wrapper is rendered as a plain inline box so it does not change page layout.
+ */
+.ip-detector-wrapper {
+  display: inline;
+  position: relative;
+  vertical-align: baseline;
+  /* Ensure the wrapper itself captures hover events toward the icon area. */
+  pointer-events: auto;
+}
+
+/* Hover mode: extend the hover-sensitive area from the right edge of the IP
+   text over to the icon so the icon appears before the cursor reaches it.
+   Not used when the icon is rendered inline inside clipped containers. */
+.ip-detector-wrapper.style-hover:not(.layout-inline-icon)::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: calc(0.75em + 6px);
+  height: 1.2em;
+  transform: translateY(-50%);
+  background: transparent;
+  pointer-events: auto;
+  z-index: 9998;
+}
+
+/*
+ * NERD icon sits in the upper-right corner of the wrapper, absolutely
+ * positioned so it never takes up inline space or shifts text.
+ */
+.ip-detector-icon {
+  position: absolute;
+  top: -0.1em;
+  left: calc(100% + 2px);
+  width: 0.75em;
+  height: 0.75em;
+  min-width: 10px;
+  min-height: 10px;
+  cursor: pointer;
+  user-select: none;
+  pointer-events: auto;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 120ms ease 0ms, transform 120ms ease 0ms;
+}
+
+/* Inline icon fallback for clipped containers (e.g. table cells with
+   overflow:hidden or text-overflow:ellipsis). The icon stays within the
+   wrapper's inline box so it cannot be clipped by an ancestor. */
+.ip-detector-wrapper.layout-inline-icon .ip-detector-icon {
+  position: static;
+  display: inline-block;
+  vertical-align: super;
+  margin-left: 2px;
+}
+
+/* Hover mode: keep IP text non-clickable; only the icon opens the popup.
+   pointer-events:none lets clicks pass through to native elements such
+   as links that may already wrap the IP address. */
+.ip-detector-wrapper.style-hover .ip-detector-text {
+  cursor: inherit;
+  pointer-events: none;
+  border-radius: 2px;
+  padding: 0 2px;
+  margin: 0 -2px;
+  transition: background-color 120ms ease;
+}
+
+/* Hover mode: icon hidden until the wrapper (or icon) is hovered.
+   The wrapper:hover rule is more specific than the .ip-detector-icon-hidden
+   helper so CSS can reveal the icon even when JS mouseenter does not fire
+   (for example because the wrapper is inside a clickable table cell). */
+.ip-detector-wrapper.style-hover .ip-detector-icon {
+  opacity: 0;
+  transform: scale(0.9);
+  pointer-events: none;
+  transition: opacity 120ms ease 120ms, transform 120ms ease 120ms;
+}
+
+.ip-detector-wrapper.style-hover:hover .ip-detector-icon {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.ip-detector-wrapper.style-hover .ip-detector-icon:hover {
+  transform: scale(1.15);
+}
+
+.ip-detector-wrapper.style-hover:hover .ip-detector-text {
+  background-color: rgba(26, 115, 232, 0.12);
+}
+
+/* JS helper used to keep the icon hidden after the cursor leaves. */
+.ip-detector-icon-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/*
+ * Reputation icons are now separate colored PNGs, so no CSS background-color
+ * tinting is used. Reset any background/border that might leak from the page
+ * or previous styles.
+ */
+.ip-detector-icon {
+  background: transparent none !important;
+  border: none !important;
+}
+

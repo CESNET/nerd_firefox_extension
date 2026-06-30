@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>IP Detector Test Page</title>
+    <link rel="stylesheet" href="../content/contentStyle.css">
+    <style>
+      body { font-family: sans-serif; line-height: 1.6; padding: 20px; }
+    </style>
+  </head>
+  <body>
+    <h1>Test IP Addresses</h1>
+    <p>IPv4 example 1: <span class="ip-detector-wrapper style-hover"><span class="ip-detector-text">45.148.10.121</span><img class="ip-detector-icon ip-detector-icon-hidden" src="../icons/icon-48.png" alt="Lookup IP" title="Search this IP in NERD"></span></p>
+    <p>IPv4 example 2: <span class="ip-detector-wrapper style-hover"><span class="ip-detector-text">8.8.8.8</span><img class="ip-detector-icon ip-detector-icon-hidden" src="../icons/icon-48.png" alt="Lookup IP" title="Search this IP in NERD"></span></p>
+    <p>IPv4 example 3: <span class="ip-detector-wrapper style-hover"><span class="ip-detector-text">1.1.1.1</span><img class="ip-detector-icon ip-detector-icon-hidden" src="../icons/icon-48.png" alt="Lookup IP" title="Search this IP in NERD"></span></p>
+    <p>IPv4 example 4: <span class="ip-detector-wrapper style-hover"><span class="ip-detector-text">93.184.216.34</span><img class="ip-detector-icon ip-detector-icon-hidden" src="../icons/icon-48.png" alt="Lookup IP" title="Search this IP in NERD"></span></p>
+    <p>IPv4 example 5: <span class="ip-detector-wrapper style-hover"><span class="ip-detector-text">151.101.1.69</span><img class="ip-detector-icon ip-detector-icon-hidden" src="../icons/icon-48.png" alt="Lookup IP" title="Search this IP in NERD"></span></p>
+    <p>Clickable link example: <a href="https://8.8.8.8"><span class="ip-detector-wrapper style-hover"><span class="ip-detector-text">8.8.8.8</span><img class="ip-detector-icon ip-detector-icon-hidden" src="../icons/icon-48.png" alt="Lookup IP" title="Search this IP in NERD"></span></a> (link remains clickable; only the icon opens the extension)</p>
+    <p>CIDR prefix example: <span class="ip-detector-text">10.0.0.0/8</span>, <span class="ip-detector-text">192.168.1.0/24</span></p>
+    <p>IP with port example: <span class="ip-detector-wrapper style-hover" data-ip="127.0.0.1"><span class="ip-detector-text">127.0.0.1:8080</span><img class="ip-detector-icon ip-detector-icon-hidden" src="../icons/icon-48.png" alt="Lookup IP" title="Search this IP in NERD"></span></p>
+    <p>IP with port example: <span class="ip-detector-wrapper style-hover" data-ip="192.168.0.1"><span class="ip-detector-text">192.168.0.1:443</span><img class="ip-detector-icon ip-detector-icon-hidden" src="../icons/icon-48.png" alt="Lookup IP" title="Search this IP in NERD"></span></p>
+    <p>IPv6 example 1: 2001:4860:4860::8888</p>
+    <p>IPv6 example 2: 2606:4700:4700::1111</p>
+    <p>IPv6 example 3: 2001:db8::1</p>
+    <p>IPv6 example 4: 2a03:2880:f10a:83:face:b00c:0:25de</p>
+    <p>IPv6 example 5: fe80::1ff:fe23:4567:890a</p>
+    <p>Reverse DNS that should NOT be scanned: 4.3.2.1.in-addr.arpa</p>
+  </body>
+</html>

@@ -1,0 +1,64 @@
+{
+  "manifest_version": 3,
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "nerd-ip-info@cesnet.cz",
+      "strict_min_version": "109.0"
+    }
+  },
+  "name": "NERD IP info",
+  "description": "Detects IPv4 addresses on web pages, queries the CESNET NERD API, and displays results in an interactive popup.",
+  "version": "1.0.0",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "permissions": [
+    "storage",
+    "contextMenus",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": ["background/background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/contentScript.js"],
+      "css": ["content/contentStyle.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png"
+    }
+  },
+  "options_page": "options/options.html",
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "icons/icon-16.png",
+        "icons/icon-32.png",
+        "icons/icon-48.png",
+        "icons/icon-128.png",
+        "icons/icon-gray.png",
+        "icons/icon-green.png",
+        "icons/icon-orange.png",
+        "icons/icon-red.png",
+        "icons/icon-purple.png"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}

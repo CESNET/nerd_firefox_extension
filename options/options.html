@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>NERD IP info — Options</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header class="page-header">
+      <h1>NERD IP info</h1>
+      <p class="subtitle">Extension options</p>
+    </header>
+
+    <section class="card">
+      <h2>API Token</h2>
+      <label for="apiToken">NERD API token</label>
+      <input type="password" id="apiToken" placeholder="Paste your NERD API token">
+      <p class="hint">The token is stored locally in your browser.</p>
+      <button id="saveToken">Save Token</button>
+      <div id="tokenStatus" class="status" aria-live="polite"></div>
+    </section>
+
+    <section class="card">
+      <h2>Appearance</h2>
+      <label for="styleMode">Icon visibility</label>
+      <select id="styleMode">
+        <option value="icon">Always visible</option>
+        <option value="hover">Hover only</option>
+      </select>
+      <p class="hint">Choose when the NERD icon is shown next to detected IPs.</p>
+    </section>
+
+    <section class="card">
+      <h2>Site list</h2>
+      <label for="siteListMode">Mode</label>
+      <select id="siteListMode">
+        <option value="off">Off — site list is ignored</option>
+        <option value="block">Blocklist — disable detection on these sites</option>
+        <option value="allow">Allowlist — enable detection only on these sites</option>
+      </select>
+      <p class="mode-note">Only one list is active at a time. Switching modes keeps both lists saved, and only the selected list is used.</p>
+
+      <label for="siteList" id="siteListLabel">Sites where IP detection should be disabled</label>
+      <textarea id="siteList" rows="5" placeholder="example.com&#10;*.example.com&#10;https://banking.example.com/*"></textarea>
+      <p class="hint" id="siteListHint">One hostname or URL pattern per line. Use <code>*</code> as a wildcard at the start or end. The popup and right-click lookup still work everywhere.</p>
+      <div class="button-row">
+        <button id="saveSiteList">Save list</button>
+        <button id="clearSiteList" class="secondary-btn">Clear list</button>
+      </div>
+      <div id="siteListStatus" class="status" aria-live="polite"></div>
+    </section>
+
+    <section class="card">
+      <h2>Privacy</h2>
+      <p>Remove every IP address stored in the recent lookups list.</p>
+      <button id="clearHistory" class="danger-btn">Clear recent history</button>
+      <div id="clearStatus" class="status" aria-live="polite"></div>
+
+      <hr class="section-divider">
+
+      <p>Delete all cached reputation data for IP addresses. This resets icon colors back to gray on every page.</p>
+      <button id="clearCache" class="danger-btn">Delete cached IP data</button>
+      <div id="cacheStatus" class="status" aria-live="polite"></div>
+    </section>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
