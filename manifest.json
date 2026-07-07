@@ -3,16 +3,19 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "nerd@cesnet.cz",
-      "strict_min_version": "142.0",
+      "strict_min_version": "140.0",
       "data_collection_permissions": {
         "required": ["browsingActivity"],
         "has_previous_consent": false
       }
+    },
+    "gecko_android": {
+      "strict_min_version": "142.0"
     }
   },
   "name": "NERD IP info",
   "description": "Detects IPv4 addresses on web pages, queries the CESNET NERD API, and displays results in an interactive popup.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "icons": {
     "16": "icons/icon-16.png",
     "48": "icons/icon-48.png",
