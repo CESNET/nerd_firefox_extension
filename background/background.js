@@ -141,8 +141,8 @@ async function openPopup(ip) {
     await chrome.windows.create({
       url: url.toString(),
       type: 'popup',
-      width: 420,
-      height: 640
+      width: 500,
+      height: 680
     });
   } catch (_) {
     // Last-resort fallback
