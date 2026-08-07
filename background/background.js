@@ -8,6 +8,7 @@
 /* global chrome */
 
 const DEFAULT_API_BASE_URL = 'https://nerd.cesnet.cz/nerd/api/v1';
+const DOH_RESOLVE_URL = 'https://dns.google/resolve';
 const REQUEST_TIMEOUT_MS = 10000;
 const DEFAULT_MAX_RETRIES = 3;
 const DEFAULT_RETRY_BASE_DELAY_MS = 1000;
@@ -59,6 +60,13 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       .then((result) => sendResponse(result))
       .catch((error) => sendResponse({ ok: false, error: error.message }));
     return true; // keep the message channel open for the async response
+  }
+
+  if (message.action === 'resolveHostname' && message.ip) {
+    reverseDnsLookup(message.ip)
+      .then((hostname) => sendResponse({ ok: true, hostname }))
+      .catch((error) => sendResponse({ ok: false, error: error.message }));
+    return true;
   }
 
   if (message.action === 'lookupRepBulk' && Array.isArray(message.ips)) {
@@ -203,6 +211,55 @@ async function lookupIp(ip) {
     return { ok: true, data };
   } catch (err) {
     return { ok: false, error: 'Invalid JSON response' };
+  }
+}
+
+/**
+ * Resolves the hostname of an IPv4 address via reverse DNS (PTR record)
+ * using Google's DNS-over-HTTPS endpoint. Used as a fallback when NERD
+ * does not provide any hostname information for the address.
+ * NXDOMAIN / empty-answer responses are definitive DNS answers, so they
+ * are returned immediately without retries.
+ * @param {string} ip
+ * @returns {Promise<string|null>} Hostname without the trailing dot, or null.
+ */
+async function reverseDnsLookup(ip) {
+  const octets = String(ip).trim().split('.');
+  const isValidOctet = (o) => /^\d{1,3}$/.test(o) && Number(o) <= 255 && String(Number(o)) === o;
+  if (octets.length !== 4 || !octets.every(isValidOctet)) {
+    return null;
+  }
+
+  const name = octets.reverse().join('.') + '.in-addr.arpa';
+  const url = `${DOH_RESOLVE_URL}?name=${encodeURIComponent(name)}&type=PTR`;
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
+  try {
+    const resp = await fetch(url, {
+      headers: { Accept: 'application/dns-json' },
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+    if (!resp.ok) return null;
+
+    const data = await resp.json();
+    if (!data || typeof data !== 'object' || !Array.isArray(data.Answer)) {
+      return null;
+    }
+
+    for (const record of data.Answer) {
+      // DNS record type 12 is PTR.
+      if (record && record.type === 12 && typeof record.data === 'string') {
+        const hostname = record.data.trim().replace(/\.$/, '');
+        if (hostname) return hostname;
+      }
+    }
+    return null;
+  } catch (_) {
+    clearTimeout(timeoutId);
+    return null;
   }
 }
 

@@ -15,7 +15,7 @@
   },
   "name": "NERD IP info",
   "description": "Detects IPv4 addresses on web pages, queries the CESNET NERD API, and displays results in an interactive popup.",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "icons": {
     "16": "icons/icon-16.png",
     "48": "icons/icon-48.png",

@@ -265,7 +265,10 @@ document.addEventListener('DOMContentLoaded', () => {
     trafficLight.className = 'traffic-light ' + color;
 
     ipAddressEl.textContent = ip;
-    setText(hostnameEl, getHostname(data));
+    const nerdHostname = getHostname(data);
+    // The provenance tooltip is only set later, if the hostname comes from reverse DNS.
+    delete hostnameEl.dataset.tooltip;
+    setText(hostnameEl, nerdHostname);
     verdictEl.textContent = verdict;
     setText(threatCatEl, getThreatCategories(data).map(resolveTagName).join(', '));
     scoreEl.textContent = 'Score: ' + scoreText;
@@ -273,10 +276,63 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTags(getTags(data));
     renderDetails(data);
 
+    if (!nerdHostname) {
+      resolveHostnameFallback(ip);
+    } else {
+      setHostnameSourceTag(null);
+    }
+
     nerdLink.href = 'https://nerd.cesnet.cz/nerd/ip/' + encodeURIComponent(ip);
     nerdLink.textContent = 'Open in NERD';
 
     currentRawJson = data ? JSON.stringify(data, null, 2) : '';
+  }
+
+  /**
+   * Fallback hostname lookup via reverse DNS (PTR record), used when the
+   * NERD response contains no hostname information (or no data at all).
+   * The background service worker queries a DNS-over-HTTPS resolver.
+   * Failures are silent: the hostname field simply stays hidden.
+   * @param {string} ip
+   */
+  function resolveHostnameFallback(ip) {
+    chrome.runtime.sendMessage({ action: 'resolveHostname', ip }, (resp) => {
+      if (chrome.runtime.lastError || !resp || !resp.ok || !resp.hostname) {
+        return;
+      }
+      // Discard the response if the user has already moved on to another IP.
+      if (resultCard.classList.contains('hidden')) return;
+      if (ipAddressEl.textContent !== ip) return;
+      // Never overwrite a hostname that appeared in the meantime
+      // (e.g. from a newer NERD response for the same IP).
+      if (hostnameEl.textContent) return;
+
+      setText(hostnameEl, resp.hostname);
+      hostnameEl.dataset.tooltip = 'Hostname resolved via reverse DNS (PTR record), not from NERD';
+      setHostnameSourceTag('ptr');
+    });
+  }
+
+  /**
+   * Shows a small 'via PTR' badge next to the hostname when the hostname was
+   * resolved via reverse DNS; removes the badge in every other case.
+   * @param {'ptr'|null} source
+   */
+  function setHostnameSourceTag(source) {
+    const tag = hostnameEl.parentElement.querySelector('.hostname-source');
+    if (source !== 'ptr') {
+      if (tag) tag.remove();
+      return;
+    }
+    if (tag) return; // badge already displayed
+
+    const el = document.createElement('span');
+    el.className = 'hostname-source';
+    el.textContent = 'via PTR';
+    // Custom CSS tooltip (see .hostname-source[data-tooltip]:hover in popup.css);
+    // native title tooltips are unreliable inside extension popups.
+    el.dataset.tooltip = 'Hostname resolved via reverse DNS (PTR record), not from NERD';
+    hostnameEl.insertAdjacentElement('afterend', el);
   }
 
   /**

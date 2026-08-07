@@ -20,6 +20,7 @@ Valid API key is required in order to use the extension. For more information vi
   - 🟢 Green (Score ≤ 0.2) — Clean / Not found
   - ⚪ Gray — Unknown 
 - **Dynamic result rendering** — every field returned by the NERD API is displayed in the popup, including nested objects, dates, and arrays
+- **Reverse-DNS hostname fallback** — when NERD has no data for an IP (or no hostname in its response), the popup resolves the hostname via a PTR query over DNS-over-HTTPS (Google Public DNS) and marks it as reverse-DNS sourced
 - **Copy raw JSON** button to copy the full API response to the clipboard
 - **One-click NERD link** to open the full IP detail page
 - **Recent lookups history** stored locally (last 20 items)
