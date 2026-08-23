@@ -607,12 +607,18 @@ function updateDisabledVisualState() {
 // IP detection
 // ==================================================================
 
-// IPv4 regex — word-boundaries prevent partial matches.
+// IPv4 regex — explicit lookarounds prevent partial matches.
+// Unlike \b (which treats . as a non-word char and would happily match the
+// first four octets of 1.2.3.4.5 or an OID like 1.3.6.1.4.1.2021), the
+// leading (?<!\d\.)(?<!\w) rejects being immediately preceded by digit. or
+// by any word char, and the trailing (?![\w]|\.(?:\d)) rejects a word char
+// and also a dot that is itself followed by another digit. A plain
+// sentence-ending period (e.g. see 8.8.8.8.) is still allowed.
 // A trailing :port is intentionally included in the match; a trailing /mask
-// (CIDR) is intentionally excluded by checking the following character.
-// A trailing .in-addr.arpa (reverse DNS) is also excluded.
+// (CIDR) is intentionally excluded. A trailing .in-addr.arpa (reverse DNS)
+// is also excluded.
 const ipv4Regex =
-  /\b(?:25[0-5]|2[0-4]\d|1?\d{1,2})(?:\.(?:25[0-5]|2[0-4]\d|1?\d{1,2})){3}(?::\d+)?\b(?!\/)(?!\.in-addr\.arpa)/gi;
+  /(?<!\d\.)(?<!\w)(?:25[0-5]|2[0-4]\d|1?\d{1,2})(?:\.(?:25[0-5]|2[0-4]\d|1?\d{1,2})){3}(?::\d+)?(?![\w]|\.(?:\d))(?!\/)(?!\.in-addr\.arpa)/gi;
 
 // Never descend into elements that would spam or break page functionality
 function shouldSkipElement(element) {
